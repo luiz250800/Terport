@@ -1,0 +1,51 @@
+﻿//Classes de conexao
+import Classes.Conexao;
+import static Classes.Conexao.conexao;
+import static Classes.Conexao.query;
+import static Classes.Conexao.dados;
+
+
+
+
+
+//INSERT
+
+try {
+            query = conexao.prepareStatement("insert into tb_navio(cd_navio,nm_navio,ds_navio) values (?,?,?);");
+
+            //Definir os valores de cada indice(?)
+            query.setInt(1, 1);
+            query.setString(2, "Power Ranger");
+            query.setString(3, "Navio branco e preto");
+            query.execute();
+            JOptionPane.showMessageDialog(this, "Dados gravados com sucesso! ");
+        } catch (Exception e) {
+            System.out.println("Dados nao gravados! " + e);
+        }
+
+//SELECT VARIOS REGISTROS
+try {
+            ArrayList<NavioBean> dados = this.NavioBO.listAll();
+            for(int i=0; i<dados.size();i++){
+                JOptionPane.showMessageDialog(this, "" + dados.get(i).getCdNavio());
+            }
+            Jf_Opcoes opcoes = new Jf_Opcoes();
+            hide();
+            opcoes.show();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+
+//SELECT FIND BY PK
+try {
+
+                query = conexao.prepareStatement("select * from tb_navio where cd_navio=1;");
+                dados = query.executeQuery();
+                while(dados.next()){
+                    JOptionPane.showMessageDialog(this, "Codigo do navio: " + dados.getInt(1) + ", Nome do navio: " + dados.getString(2) + ", Descrição do navio: " + dados.getString(3) + "\n");
+
+                }
+        } catch (Exception e) {
+            System.out.println("Dados nao gravados! " + e);
+        }
